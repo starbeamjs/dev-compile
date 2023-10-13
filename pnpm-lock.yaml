@@ -15,17 +15,11 @@ importers:
         specifier: ^15.2.3
         version: 15.2.3(rollup@4.0.2)
       '@starbeam-dev/core':
-        specifier: ^1.0.0
-        version: link:.yalc/@starbeam-dev/core
+        specifier: ^1.0.1
+        version: 1.0.1
       '@swc/core':
         specifier: ^1.3.92
         version: 1.3.92(@swc/helpers@0.5.3)
-      '@types/rollup__plugin-commonjs':
-        specifier: workspace:^
-        version: link:@types/plugin-commonjs
-      '@types/rollup__plugin-node-resolve':
-        specifier: workspace:^
-        version: link:@types/plugin-node-resolve
       get-tsconfig:
         specifier: ^4.7.2
         version: 4.7.2
@@ -51,6 +45,12 @@ importers:
       '@types/node':
         specifier: ^18
         version: 18.18.5
+      '@types/rollup__plugin-commonjs':
+        specifier: workspace:^
+        version: link:@types/plugin-commonjs
+      '@types/rollup__plugin-node-resolve':
+        specifier: workspace:^
+        version: link:@types/plugin-node-resolve
       eslint:
         specifier: ^8.51.0
         version: 8.51.0
@@ -359,6 +359,10 @@ packages:
     requiresBuild: true
     dev: false
     optional: true
+
+  /@starbeam-dev/core@1.0.1:
+    resolution: {integrity: sha512-0mUu6Y+kwlGPDXgxndPgo4DbbLbhIeJKJbMbbZvvpsI3Ef5xf0Y6rKSnk4KE73u+dXGe7s7opb8XL9LQLsLeSw==}
+    dev: false
 
   /@starbeam-dev/eslint-plugin@1.0.1(@typescript-eslint/eslint-plugin@6.7.5)(@typescript-eslint/parser@6.7.5)(eslint@8.51.0)(typescript@5.2.2):
     resolution: {integrity: sha512-mjvwBccyYKj54p4SjunAxwjY+1mI5ymFD8gYt+xerKsYXxGrAGAa8auU3xvX3RvM514LLr9OI5oTkSn41BXCHA==}
