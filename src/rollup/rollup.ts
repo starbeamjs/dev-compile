@@ -1,18 +1,16 @@
 import { resolve } from "node:path";
 
-import { Package, rootAt } from "@starbeam-dev/core";
+import { Package, type PackageInfo, rootAt } from "@starbeam-dev/core";
+import type { RollupOptions } from "rollup";
 
 import externals from "./plugins/external.js";
 import importMeta from "./plugins/import-meta.js";
 import typescript from "./plugins/typescript.js";
+import type { RollupPlugin } from "./utils.js";
 
-const MODES = /** @type const */ (["development", "production", undefined]);
+const MODES = ["development", "production", undefined] as const;
 
-/**
- * @param {ImportMeta | string} here
- * @returns {import("rollup").RollupOptions[]}
- */
-export function compile(here) {
+export function compile(here: ImportMeta | string): RollupOptions[] {
   const pkg = Package.at(here);
 
   if (pkg === undefined) {
@@ -26,10 +24,9 @@ export function compile(here) {
  * @param {import("@starbeam-dev/core").PackageInfo} pkg
  * @returns {import("rollup").RollupOptions[]}
  */
-function compilePackage(pkg) {
+function compilePackage(pkg: PackageInfo): RollupOptions[] {
   return MODES.flatMap((mode) => {
-    /** @type {import("rollup").Plugin[]} */
-    const PLUGINS = [];
+    const PLUGINS: RollupPlugin[] = [];
 
     if (mode) {
       PLUGINS.push(importMeta(mode));
@@ -52,22 +49,16 @@ function compilePackage(pkg) {
   });
 }
 
-/**
- * @param {import("@starbeam-dev/core").PackageInfo} pkg
- * @param {"development" | "production" | undefined} mode
- * @returns {import("rollup").RollupOptions[]}
- */
-function entryPoints(pkg, mode) {
+function entryPoints(
+  pkg: PackageInfo,
+  mode: "development" | "production" | undefined,
+): import("rollup").RollupOptions[] {
   const {
     root,
     starbeam: { entry },
   } = pkg;
 
-  /**
-   * @param {[string, string]} entry
-   * @returns {import("rollup").RollupOptions}
-   */
-  function entryPoint([exportName, ts]) {
+  function entryPoint([exportName, ts]: [string, string]): RollupOptions {
     return {
       input: resolve(root, ts),
       output: {
@@ -100,7 +91,17 @@ function entryPoints(pkg, mode) {
  * @param {"js" | "cjs"} options.ext
  * @returns {string}
  */
-function filename({ root, name, mode, ext }) {
+function filename({
+  root,
+  name,
+  mode,
+  ext,
+}: {
+  root: string;
+  name: string;
+  mode: "development" | "production" | undefined;
+  ext: "js" | "cjs";
+}): string {
   if (mode) {
     return resolve(root, "dist", `${name}.${mode}.${ext}`);
   } else {

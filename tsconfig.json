@@ -2,19 +2,18 @@
   "compilerOptions": {
     "composite": true,
     "declaration": true,
-    "declarationDir": "node_modules/.cache/tmp/tsc",
-    "declarationMap": true,
-    "emitDeclarationOnly": true,
+    "incremental": true,
     "module": "es2022",
     "moduleResolution": "bundler",
+    "noEmit": true,
     "noImplicitAny": true,
     "noPropertyAccessFromIndexSignature": true,
     "noUncheckedIndexedAccess": true,
+    "outDir": "dist",
     "skipDefaultLibCheck": true,
     "strict": true,
     "target": "ESNext",
     "types": ["node"],
     "verbatimModuleSyntax": true
-  },
-  "exclude": ["dist/**/*"]
+  }
 }

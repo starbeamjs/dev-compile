@@ -4,7 +4,7 @@ import type { PackageInfo } from "@starbeam-dev/core";
 import type { TransformConfig } from "@swc/core";
 import { getTsconfig } from "get-tsconfig";
 
-import type { CompilerOptionsJson } from "../ts";
+import type { CompilerOptionsJson } from "../ts.js";
 import type { RollupPlugin } from "../utils.js";
 
 const require = createRequire(import.meta.url);

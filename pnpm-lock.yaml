@@ -19,7 +19,7 @@ importers:
         version: link:.yalc/@starbeam-dev/core
       '@swc/core':
         specifier: ^1.3.92
-        version: 1.3.92
+        version: 1.3.92(@swc/helpers@0.5.3)
       '@types/rollup__plugin-commonjs':
         specifier: workspace:^
         version: link:@types/plugin-commonjs
@@ -37,7 +37,7 @@ importers:
         version: 4.0.2
       rollup-plugin-ts:
         specifier: ^3.4.5
-        version: 3.4.5(@swc/core@1.3.92)(rollup@4.0.2)(typescript@5.2.2)
+        version: 3.4.5(@swc/core@1.3.92)(@swc/helpers@0.5.3)(rollup@4.0.2)(typescript@5.2.2)
       typescript:
         specifier: ^5.2.2
         version: 5.2.2
@@ -45,6 +45,9 @@ importers:
       '@starbeam-dev/eslint-plugin':
         specifier: ^1.0.1
         version: 1.0.1(@typescript-eslint/eslint-plugin@6.7.5)(@typescript-eslint/parser@6.7.5)(eslint@8.51.0)(typescript@5.2.2)
+      '@swc/helpers':
+        specifier: ^0.5.3
+        version: 0.5.3
       '@types/node':
         specifier: ^18
         version: 18.18.5
@@ -480,7 +483,7 @@ packages:
     dev: false
     optional: true
 
-  /@swc/core@1.3.92:
+  /@swc/core@1.3.92(@swc/helpers@0.5.3):
     resolution: {integrity: sha512-vx0vUrf4YTEw59njOJ46Ha5i0cZTMYdRHQ7KXU29efN1MxcmJH2RajWLPlvQarOP1ab9iv9cApD7SMchDyx2vA==}
     engines: {node: '>=10'}
     requiresBuild: true
@@ -491,6 +494,7 @@ packages:
         optional: true
     dependencies:
       '@swc/counter': 0.1.2
+      '@swc/helpers': 0.5.3
       '@swc/types': 0.1.5
     optionalDependencies:
       '@swc/core-darwin-arm64': 1.3.92
@@ -508,6 +512,11 @@ packages:
   /@swc/counter@0.1.2:
     resolution: {integrity: sha512-9F4ys4C74eSTEUNndnER3VJ15oru2NumfQxS8geE+f3eB5xvfxpWyqE5XlVnxb/R14uoXi6SLbBwwiDSkv+XEw==}
     dev: false
+
+  /@swc/helpers@0.5.3:
+    resolution: {integrity: sha512-FaruWX6KdudYloq1AHD/4nU+UsMTdNE8CKyrseXWEcgjDAbvkwJg2QGPAnfIJLIWsjZOSPLOAykK6fuYp4vp4A==}
+    dependencies:
+      tslib: 2.6.2
 
   /@swc/types@0.1.5:
     resolution: {integrity: sha512-myfUej5naTBWnqOCc/MdVOLVjXUXtIA+NpDrDBKJtLLg2shUjBu3cZmB/85RyitKc55+lUUyl7oRfLOvkr2hsw==}
@@ -2687,7 +2696,7 @@ packages:
       glob: 7.2.3
     dev: true
 
-  /rollup-plugin-ts@3.4.5(@swc/core@1.3.92)(rollup@4.0.2)(typescript@5.2.2):
+  /rollup-plugin-ts@3.4.5(@swc/core@1.3.92)(@swc/helpers@0.5.3)(rollup@4.0.2)(typescript@5.2.2):
     resolution: {integrity: sha512-9iCstRJpEZXSRQuXitlSZAzcGlrqTbJg1pE4CMbEi6xYldxVncdPyzA2I+j6vnh73wBymZckerS+Q/iEE/M3Ow==}
     engines: {node: '>=16.15.1', npm: '>=7.0.0', pnpm: '>=3.2.0', yarn: '>=1.13'}
     peerDependencies:
@@ -2717,7 +2726,8 @@ packages:
         optional: true
     dependencies:
       '@rollup/pluginutils': 5.0.5(rollup@4.0.2)
-      '@swc/core': 1.3.92
+      '@swc/core': 1.3.92(@swc/helpers@0.5.3)
+      '@swc/helpers': 0.5.3
       '@wessberg/stringutil': 1.0.19
       ansi-colors: 4.1.3
       browserslist: 4.22.1
