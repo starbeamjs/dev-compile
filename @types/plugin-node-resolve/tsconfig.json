@@ -1,0 +1,19 @@
+{
+  "extends": "../../../.config/tsconfig/tsconfig.shared.json",
+  "compilerOptions": {
+    "composite": true,
+    "declaration": true,
+    "declarationDir": "../../../dist/types",
+    "declarationMap": true,
+    "types": [
+      "../../../packages/env.d.ts",
+      "../../../packages/env.d.ts",
+      "../../../packages/env.d.ts",
+      "../../../packages/env.d.ts",
+      "../../../packages/env.d.ts",
+      "../../../packages/env.d.ts"
+    ],
+    "emitDeclarationOnly": true
+  },
+  "exclude": ["dist/**/*"]
+}
