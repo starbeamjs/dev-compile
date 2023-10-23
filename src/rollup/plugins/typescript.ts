@@ -1,7 +1,7 @@
 import { createRequire } from "node:module";
 
 import type { PackageInfo } from "@starbeam-dev/core";
-import type { TransformConfig } from "@swc/core";
+import type { JscConfig, ReactConfig, TransformConfig } from "@swc/core";
 import { getTsconfig } from "get-tsconfig";
 
 import type { CompilerOptionsJson } from "../ts.js";
@@ -105,16 +105,13 @@ export default function typescript(
   mode: "development" | "production" | undefined,
 ) {
   return (pkg: PackageInfo, config: CompilerOptionsJson): RollupPlugin => {
-    const compilerOptions: CompilerOptionsJson = {
-      ...getTsconfig(pkg.root)?.config.compilerOptions,
-      ...config,
-    };
+    const { config: tsconfig } = getTsconfig(pkg.root) ?? {};
+    const compilerOptions = tsconfig?.compilerOptions ?? {};
 
     const transform: Partial<TransformConfig> = {
       treatConstEnumAsEnum: true,
     };
 
-    /** @type {Partial<JsMinifyOptions>} */
     const minify = {
       mangle: {
         toplevel: true,
@@ -130,32 +127,46 @@ export default function typescript(
         defaults: true,
         unused: true,
       },
-    };
+    } as const;
 
-    /** @type {Partial<SwcConfig>} */
-    const swcConfig = {
-      jsc: { transform, minify },
-    };
+    let jscConfig: Partial<JscConfig> = { transform };
 
-    const jsx = pkg.starbeam.jsx;
-    const source = pkg.starbeam.source;
-    const hasJSX = source === "jsx" || source === "tsx";
-
-    if (hasJSX) {
-      const importSource = jsx ?? "react";
-      transform.react = { runtime: "automatic", importSource };
-
-      compilerOptions.jsx = "react-jsx";
-      compilerOptions.jsxImportSource = importSource;
+    if (mode === "production") {
+      jscConfig.minify = minify;
     }
+
+    const fragmentFactory = compilerOptions.jsxFragmentFactory;
+    const jsxFactory = compilerOptions.jsxFactory;
+
+    if (fragmentFactory && jsxFactory)
+      jscConfig = withReact(jscConfig, {
+        pragma: jsxFactory,
+        pragmaFrag: fragmentFactory,
+      });
+
+    const importSource = compilerOptions.jsxImportSource;
+
+    if (importSource)
+      jscConfig = withReact(jscConfig, { runtime: "automatic", importSource });
 
     return rollupTS({
       transpiler: "swc",
       transpileOnly: true,
 
-      swcConfig,
+      swcConfig: {
+        jsc: jscConfig,
+      },
 
-      tsconfig: compilerOptions,
+      tsconfig: {
+        ...compilerOptions,
+        ...config,
+      },
     });
   };
+}
+
+function withReact(jsc: JscConfig, react: ReactConfig): JscConfig {
+  jsc.transform ??= {};
+  jsc.transform.react = { ...jsc.transform.react, ...react };
+  return jsc;
 }

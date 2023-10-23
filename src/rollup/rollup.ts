@@ -38,7 +38,7 @@ function compilePackage(pkg: PackageInfo): RollupOptions[] {
         ...PLUGINS,
         externals(pkg),
         typescript(mode)(pkg, {
-          target: "es2022",
+          target: "esnext",
           module: "esnext",
           moduleDetection: "force",
           moduleResolution: "bundler",
@@ -79,18 +79,15 @@ function entryPoints(
     };
   }
 
-  return Object.entries(entry).map(entryPoint);
+  if (entry === undefined) {
+    // eslint-disable-next-line no-console
+    console.warn("No entry point found for package", pkg.name);
+    return [];
+  } else {
+    return Object.entries(entry).map(entryPoint);
+  }
 }
 
-/**
- *
- * @param {object} options
- * @param {string} options.root
- * @param {string} options.name
- * @param {"development" | "production" | undefined} options.mode
- * @param {"js" | "cjs"} options.ext
- * @returns {string}
- */
 function filename({
   root,
   name,
