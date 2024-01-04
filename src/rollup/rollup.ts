@@ -1,7 +1,9 @@
-import { resolve } from "node:path";
+import { execSync } from 'node:child_process';
+import { join, resolve } from "node:path";
 
 import { Package, type PackageInfo, rootAt } from "@starbeam-dev/core";
 import type { RollupOptions } from "rollup";
+import copy from 'rollup-plugin-copy'
 
 import externals from "./plugins/external.js";
 import importMeta from "./plugins/import-meta.js";
@@ -10,21 +12,49 @@ import type { RollupPlugin } from "./utils.js";
 
 const MODES = ["development", "production", undefined] as const;
 
-export function compile(here: ImportMeta | string): RollupOptions[] {
+interface CompileOptions {
+  /**
+   * Copy the changelog from the root of the monorepo.
+   * true by default
+   */
+  copyRootChangelog?: boolean;
+}
+
+export function compile(here: ImportMeta | string, options?: CompileOptions): RollupOptions[] {
   const pkg = Package.at(here);
 
   if (pkg === undefined) {
     throw new Error(`Package not found at ${rootAt(here)}`);
   }
 
-  return compilePackage(pkg);
+  return compilePackage(pkg, options || {});
+}
+
+function copyRootChangelog(pkg: PackageInfo): RollupPlugin {
+  const monorepoRoot = execSync('git rev-parse --show-toplevel', { encoding: 'utf-8', cwd: pkg.root }).trim();
+  const rootChangelog = join(monorepoRoot, 'CHANGELOG.md');
+
+  // this plugin does not provide types
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
+  const includeChangelog = copy({
+    targets: [
+      {
+        src: rootChangelog,
+        dest: '.',
+      }
+    ],
+  });
+
+  return includeChangelog as RollupPlugin;
+
 }
 
 /**
  * @param {import("@starbeam-dev/core").PackageInfo} pkg
+ * @param {CompileOptions} options
  * @returns {import("rollup").RollupOptions[]}
  */
-function compilePackage(pkg: PackageInfo): RollupOptions[] {
+function compilePackage(pkg: PackageInfo, options: CompileOptions): RollupOptions[] {
   return MODES.flatMap((mode) => {
     const PLUGINS: RollupPlugin[] = [];
 
@@ -32,7 +62,7 @@ function compilePackage(pkg: PackageInfo): RollupOptions[] {
       PLUGINS.push(importMeta(mode));
     }
 
-    return entryPoints(pkg, mode).map((options) => ({
+    const entries = entryPoints(pkg, mode).map((options) => ({
       ...options,
       plugins: [
         ...PLUGINS,
@@ -46,6 +76,17 @@ function compilePackage(pkg: PackageInfo): RollupOptions[] {
         }),
       ],
     }));
+
+    /**
+      * We only need to do this once, so we'll push it on the first entrypoint's rollup config
+      */
+    if (options.copyRootChangelog ?? true) {
+      const copyPlugin = copyRootChangelog(pkg);
+      // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+      entries[0]?.plugins.push(copyPlugin);
+    }
+
+    return entries;
   });
 }
 
