@@ -1,18 +1,14 @@
 {
   "name": "@starbeam-dev/compile",
-  "version": "1.0.1",
-  "description": "A rollup plugin for building packages that use starbeam-dev",
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:starbeamjs/dev-compile.git"
-  },
   "type": "module",
+  "version": "1.0.2",
+  "description": "A rollup plugin for building packages that use starbeam-dev",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "exports": {
     "types": "./dist/index.d.ts",
     "default": "./dist/index.js"
   },
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "scripts": {
     "prepare": "rollup -c",
     "test:lint": "eslint . --max-warnings 0",
@@ -38,5 +34,9 @@
     "@types/rollup__plugin-node-resolve": "workspace:^",
     "eslint": "^8.51.0",
     "release-plan": "^0.6.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:starbeamjs/dev-compile.git"
   }
 }
