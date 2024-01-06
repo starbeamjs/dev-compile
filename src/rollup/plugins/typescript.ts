@@ -113,8 +113,10 @@ export default function typescript(
     };
 
     const minify = {
+      format: {
+        comments: mode === 'production',
+      },
       mangle: {
-        // module: true,
         toplevel: true,
         properties: {
           builtins: false,

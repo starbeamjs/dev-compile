@@ -549,8 +549,10 @@ const rollupTS = require("rollup-plugin-ts");
             treatConstEnumAsEnum: true
         };
         const minify = {
+            format: {
+                comments: mode === 'production'
+            },
             mangle: {
-                // module: true,
                 toplevel: true,
                 properties: {
                     builtins: false
