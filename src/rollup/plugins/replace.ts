@@ -51,12 +51,12 @@ export function createReplacePlugin(
 ): RollupPlugin {
   const pattern = new RegExp(
     "\\b(" +
-      Object.keys(replacements)
-        .map((str) => {
-          return str.replace(/[-[\]/{}()*+?.\\^$|]/g, "\\$&");
-        })
-        .join("|") +
-      ")\\b",
+    Object.keys(replacements)
+      .map((str) => {
+        return str.replace(/[-[\]/{}()*+?.\\^$|]/g, "\\$&");
+      })
+      .join("|") +
+    ")\\b",
     "g",
   );
 

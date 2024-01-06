@@ -113,16 +113,27 @@ export default function typescript(
     };
 
     const minify = {
+      format: {
+        comments: mode === 'production',
+      },
       mangle: {
         toplevel: true,
+        properties: {
+          builtins: false,
+        },
       },
       module: true,
       compress: {
         module: true,
+        passes: 4,
         unsafe_math: true,
         unsafe_symbols: mode === "production",
-
         hoist_funs: true,
+        conditionals: true,
+        drop_debugger: true,
+        evaluate: true,
+        reduce_vars: true,
+        side_effects: true,
         dead_code: true,
         defaults: true,
         unused: true,

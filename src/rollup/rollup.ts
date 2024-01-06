@@ -35,7 +35,6 @@ function copyRootChangelog(pkg: PackageInfo): RollupPlugin {
   const rootChangelog = join(monorepoRoot, 'CHANGELOG.md');
 
   // this plugin does not provide types
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
   const includeChangelog = copy({
     targets: [
       {
@@ -45,7 +44,7 @@ function copyRootChangelog(pkg: PackageInfo): RollupPlugin {
     ],
   });
 
-  return includeChangelog as RollupPlugin;
+  return includeChangelog;
 
 }
 
@@ -62,8 +61,11 @@ function compilePackage(pkg: PackageInfo, options: CompileOptions): RollupOption
       PLUGINS.push(importMeta(mode));
     }
 
+    const deps = Object.keys(pkg.dependencies);
+
     const entries = entryPoints(pkg, mode).map((options) => ({
       ...options,
+      external: deps,
       plugins: [
         ...PLUGINS,
         externals(pkg),
@@ -102,10 +104,12 @@ function entryPoints(
   function entryPoint([exportName, ts]: [string, string]): RollupOptions {
     return {
       input: resolve(root, ts),
+      treeshake: true,
       output: {
         file: filename({ root, name: exportName, mode, ext: "js" }),
         format: "esm",
         sourcemap: true,
+        hoistTransitiveImports: false,
         exports: "auto",
       },
       onwarn: (warning, warn) => {
