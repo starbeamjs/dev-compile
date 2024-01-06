@@ -61,8 +61,11 @@ function compilePackage(pkg: PackageInfo, options: CompileOptions): RollupOption
       PLUGINS.push(importMeta(mode));
     }
 
+    const deps = Object.keys(pkg.dependencies);
+
     const entries = entryPoints(pkg, mode).map((options) => ({
       ...options,
+      external: deps,
       plugins: [
         ...PLUGINS,
         externals(pkg),

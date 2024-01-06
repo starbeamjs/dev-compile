@@ -10,6 +10,7 @@
     "default": "./dist/index.js"
   },
   "scripts": {
+    "build": "rollup -c",
     "prepare": "rollup -c",
     "test:lint": "eslint . --max-warnings 0",
     "test:types": "tsc -b"

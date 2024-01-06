@@ -114,7 +114,11 @@ export default function typescript(
 
     const minify = {
       mangle: {
+        module: true,
         toplevel: true,
+        properties: {
+          builtins: false,
+        },
       },
       module: true,
       compress: {
@@ -122,7 +126,6 @@ export default function typescript(
         passes: 4,
         unsafe_math: true,
         unsafe_symbols: mode === "production",
-
         hoist_funs: true,
         conditionals: true,
         drop_debugger: true,
