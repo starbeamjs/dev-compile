@@ -119,10 +119,16 @@ export default function typescript(
       module: true,
       compress: {
         module: true,
+        passes: 4,
         unsafe_math: true,
         unsafe_symbols: mode === "production",
 
         hoist_funs: true,
+        conditionals: true,
+        drop_debugger: true,
+        evaluate: true,
+        reduce_vars: true,
+        side_effects: true,
         dead_code: true,
         defaults: true,
         unused: true,

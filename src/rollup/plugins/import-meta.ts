@@ -31,6 +31,9 @@ export default (mode = process.env["MODE"] ?? "development"): RollupPlugin => {
   return createReplacePlugin(
     (id) => /\.(j|t)sx?$/.test(id),
     {
+      // remove inline testing
+      "import.meta.vitest": "false",
+      // env
       "import.meta.env.MODE": mode,
       "import.meta.env.DEV": DEV ? "true" : "false",
       "import.meta.env.PROD": PROD ? "true" : "false",
