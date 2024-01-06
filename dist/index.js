@@ -550,7 +550,7 @@ const rollupTS = require("rollup-plugin-ts");
         };
         const minify = {
             mangle: {
-                module: true,
+                // module: true,
                 toplevel: true,
                 properties: {
                     builtins: false

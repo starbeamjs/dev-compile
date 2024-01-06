@@ -114,7 +114,7 @@ export default function typescript(
 
     const minify = {
       mangle: {
-        module: true,
+        // module: true,
         toplevel: true,
         properties: {
           builtins: false,
