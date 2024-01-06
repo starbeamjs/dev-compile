@@ -23,7 +23,8 @@
     "magic-string": "^0.30.5",
     "rollup": "^4.1.4",
     "rollup-plugin-ts": "^3.4.5",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "rollup-plugin-copy": "^3.5.0"
   },
   "devDependencies": {
     "@starbeam-dev/eslint-plugin": "^1.0.3",
