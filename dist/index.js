@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { execSync } from 'node:child_process';
 import { join, resolve } from 'node:path';
+import terser from '@rollup/plugin-terser';
 import { Package, rootAt } from '@starbeam-dev/core';
 import copy from 'rollup-plugin-copy';
 import 'typescript';
@@ -666,7 +667,17 @@ function copyRootChangelog(pkg) {
                         moduleDetection: "force",
                         moduleResolution: "bundler",
                         verbatimModuleSyntax: true
-                    })
+                    }),
+                    ...mode === 'production' ? [
+                        terser({
+                            // remove all comments
+                            format: {
+                                comments: false
+                            },
+                            // prevent any compression
+                            compress: false
+                        })
+                    ] : []
                 ]
             }));
         /**

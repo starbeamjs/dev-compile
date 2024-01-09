@@ -1,6 +1,7 @@
 import { execSync } from 'node:child_process';
 import { join, resolve } from "node:path";
 
+import terser from '@rollup/plugin-terser';
 import { Package, type PackageInfo, rootAt } from "@starbeam-dev/core";
 import type { RollupOptions } from "rollup";
 import copy from 'rollup-plugin-copy'
@@ -76,6 +77,16 @@ function compilePackage(pkg: PackageInfo, options: CompileOptions): RollupOption
           moduleResolution: "bundler",
           verbatimModuleSyntax: true,
         }),
+        ...(mode === 'production' ? [
+          terser({
+            // remove all comments
+            format: {
+              comments: false
+            },
+            // prevent any compression
+            compress: false
+          }),
+        ] : [])
       ],
     }));
 
