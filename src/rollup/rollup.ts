@@ -1,6 +1,7 @@
 import { execSync } from 'node:child_process';
 import { join, resolve } from "node:path";
 
+import terser from '@rollup/plugin-terser';
 import { Package, type PackageInfo, rootAt } from "@starbeam-dev/core";
 import type { RollupOptions } from "rollup";
 import copy from 'rollup-plugin-copy'
@@ -35,7 +36,6 @@ function copyRootChangelog(pkg: PackageInfo): RollupPlugin {
   const rootChangelog = join(monorepoRoot, 'CHANGELOG.md');
 
   // this plugin does not provide types
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
   const includeChangelog = copy({
     targets: [
       {
@@ -45,7 +45,7 @@ function copyRootChangelog(pkg: PackageInfo): RollupPlugin {
     ],
   });
 
-  return includeChangelog as RollupPlugin;
+  return includeChangelog;
 
 }
 
@@ -62,8 +62,11 @@ function compilePackage(pkg: PackageInfo, options: CompileOptions): RollupOption
       PLUGINS.push(importMeta(mode));
     }
 
+    const deps = Object.keys(pkg.dependencies);
+
     const entries = entryPoints(pkg, mode).map((options) => ({
       ...options,
+      external: deps,
       plugins: [
         ...PLUGINS,
         externals(pkg),
@@ -74,6 +77,16 @@ function compilePackage(pkg: PackageInfo, options: CompileOptions): RollupOption
           moduleResolution: "bundler",
           verbatimModuleSyntax: true,
         }),
+        ...(mode === 'production' ? [
+          terser({
+            // remove all comments
+            format: {
+              comments: false
+            },
+            // prevent any compression
+            compress: false
+          }),
+        ] : [])
       ],
     }));
 
@@ -102,10 +115,12 @@ function entryPoints(
   function entryPoint([exportName, ts]: [string, string]): RollupOptions {
     return {
       input: resolve(root, ts),
+      treeshake: true,
       output: {
         file: filename({ root, name: exportName, mode, ext: "js" }),
         format: "esm",
         sourcemap: true,
+        hoistTransitiveImports: false,
         exports: "auto",
       },
       onwarn: (warning, warn) => {
