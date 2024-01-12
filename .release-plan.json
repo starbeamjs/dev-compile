@@ -2,20 +2,16 @@
   "solution": {
     "@starbeam-dev/compile": {
       "impact": "minor",
-      "oldVersion": "1.0.2",
-      "newVersion": "1.1.0",
+      "oldVersion": "1.1.0",
+      "newVersion": "1.2.0",
       "constraints": [
         {
           "impact": "minor",
           "reason": "Appears in changelog section :rocket: Enhancement"
-        },
-        {
-          "impact": "patch",
-          "reason": "Appears in changelog section :house: Internal"
         }
       ],
       "pkgJSONPath": "./package.json"
     }
   },
-  "description": "## Release (2024-01-06)\n\n@starbeam-dev/compile 1.1.0 (minor)\n\n#### :rocket: Enhancement\n* `@starbeam-dev/compile`\n  * [#1](https://github.com/starbeamjs/dev-compile/pull/1) Add copy plugin for root CHANGELOG ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n\n#### :house: Internal\n* `@starbeam-dev/compile`\n  * [#2](https://github.com/starbeamjs/dev-compile/pull/2) The published version is 1.0.2, not 1.0.1 ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n  * [#3](https://github.com/starbeamjs/dev-compile/pull/3) Setup release plan ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n\n#### Committers: 1\n- [@NullVoxPopuli](https://github.com/NullVoxPopuli)\n"
+  "description": "## Release (2024-01-12)\n\n@starbeam-dev/compile 1.2.0 (minor)\n\n#### :rocket: Enhancement\n* `@starbeam-dev/compile`\n  * [#5](https://github.com/starbeamjs/dev-compile/pull/5) Make starbeam smaller / faster ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n\n#### Committers: 1\n- [@NullVoxPopuli](https://github.com/NullVoxPopuli)\n"
 }
