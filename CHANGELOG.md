@@ -1,4 +1,14 @@
 # Changelog
+## Release (2024-01-12)
+
+@starbeam-dev/compile 1.2.0 (minor)
+
+#### :rocket: Enhancement
+* `@starbeam-dev/compile`
+  * [#5](https://github.com/starbeamjs/dev-compile/pull/5) Make starbeam smaller / faster ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+
+#### Committers: 1
+- [@NullVoxPopuli](https://github.com/NullVoxPopuli)
 ## Release (2024-01-06)
 
 @starbeam-dev/compile 1.1.0 (minor)
